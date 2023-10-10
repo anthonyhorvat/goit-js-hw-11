@@ -20,7 +20,7 @@ const API_KEY = '39909417-bccdaa8191a89f04b004c69e8';
 const BASE_URL = 'https://pixabay.com/api/';
 const ENDPOINT = 'image_type=photo&orientation=horizontal&safesearch=true';
 
-refs = {
+const refs = {
   form: document.querySelector('.search-form'),
   gallery: document.querySelector('.gallery'),
   target: document.querySelector('.js-guard'),
@@ -95,12 +95,3 @@ function getTrending() {
   });
   return axios.get(`${BASE_URL}?${params}`);
 }
-
-// const getImage = async searchWord => {
-//   const resp = await fetch(
-//     `${BASE_URL}?${API_KEY}&${ENDPOINT}&q=${searchWord}`
-//   );
-//   const data = await resp.json();
-//   return data;
-// };
-// getImage('cat').then(data => console.log(data));
