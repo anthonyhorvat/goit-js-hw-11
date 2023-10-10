@@ -10,7 +10,7 @@ const gallery = document.querySelector('.gallery');
 const target = document.querySelector('.js-guard');
 
 const BASE_URL = 'https://pixabay.com/api/';
-const API_KEY = '39827869-ea8193496bafc954651761ff2';
+const API_KEY = '39909417-bccdaa8191a89f04b004c69e8';
 const lightbox = new SimpleLightbox('.gallery a', {
   close: false,
   showCounter: false,
