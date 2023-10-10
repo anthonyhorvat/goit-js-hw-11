@@ -95,3 +95,12 @@ function getTrending() {
   });
   return axios.get(`${BASE_URL}?${params}`);
 }
+
+// const getImage = async searchWord => {
+//   const resp = await fetch(
+//     `${BASE_URL}?${API_KEY}&${ENDPOINT}&q=${searchWord}`
+//   );
+//   const data = await resp.json();
+//   return data;
+// };
+// getImage('cat').then(data => console.log(data));
