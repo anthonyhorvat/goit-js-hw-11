@@ -1,37 +1,31 @@
-import axios from 'axios';
 import Notiflix from 'notiflix';
+import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
 import createMarkup from './create-markup';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 import './styles.css';
 
+const form = document.querySelector('.search-form');
+const gallery = document.querySelector('.gallery');
+const target = document.querySelector('.js-guard');
+
+const BASE_URL = 'https://pixabay.com/api/';
+const API_KEY = '39827869-ea8193496bafc954651761ff2';
 const lightbox = new SimpleLightbox('.gallery a', {
   close: false,
   showCounter: false,
 });
-
 const optionsObserver = {
   root: null,
   rootMargin: '200px',
   threshold: 1.0,
 };
 
-const API_KEY = '39909417-bccdaa8191a89f04b004c69e8';
-const BASE_URL = 'https://pixabay.com/api/';
-const ENDPOINT = 'image_type=photo&orientation=horizontal&safesearch=true';
-
-const refs = {
-  form: document.querySelector('.search-form'),
-  gallery: document.querySelector('.gallery'),
-  target: document.querySelector('.js-guard'),
-};
-
-refs.form.addEventListener('submit', onSubmit);
+form.addEventListener('submit', onSubmit);
 
 let observer = new IntersectionObserver(observerScroll, optionsObserver);
-let searchQuery;
 let currentPage = 1;
-
+let searchQuery;
 function observerScroll(entries, observer) {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -62,25 +56,28 @@ function observerScroll(entries, observer) {
   });
 }
 
-async function onSubmit(event) {
-  event.preventDefault();
+async function onSubmit(e) {
+  e.preventDefault();
   currentPage = 1;
-  searchQuery = refs.form.elements.searchQuery.value;
+  searchQuery = form.elements.searchQuery.value;
   if (searchQuery.trim() === '') {
     return Notiflix.Notify.warning('Enter something');
   }
 
   const response = await getTrending();
-  const dataArray = response.data.hits;
+  const dataArray = response.data.hits; // масив об'єктів
 
   if (dataArray.length === 0) {
     return Notiflix.Notify.failure(
-      '"Sorry, there are no images matching your search query. Please try again."'
+      'Sorry, there are no images matching your search query. Please try again.'
     );
   }
-  refs.gallery.innerHTML = createMarkup(dataArray);
+  gallery.innerHTML = createMarkup(dataArray);
+
   lightbox.refresh();
-  refs.form.reset();
+  observer.observe(target);
+
+  form.reset();
 }
 
 function getTrending() {
@@ -95,12 +92,3 @@ function getTrending() {
   });
   return axios.get(`${BASE_URL}?${params}`);
 }
-
-// const getImage = async searchWord => {
-//   const resp = await fetch(
-//     `${BASE_URL}?${API_KEY}&${ENDPOINT}&q=${searchWord}`
-//   );
-//   const data = await resp.json();
-//   return data;
-// };
-// getImage('cat').then(data => console.log(data));
